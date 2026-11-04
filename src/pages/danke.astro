@@ -1,4 +1,5 @@
 ---
+import { p } from '../lib/pfad';
 import Base from '../layouts/Base.astro';
 import site from '../data/site.json';
 ---
@@ -12,7 +13,7 @@ import site from '../data/site.json';
         <a href={`https://wa.me/${site.whatsapp}`} class="button button--linie" rel="noopener" target="_blank">Eilig? Schreib mir auf WhatsApp</a>
         <a href={`https://www.instagram.com/${site.instagram}/`} class="button button--linie" rel="noopener" target="_blank">Fotos auf Instagram ansehen</a>
       </div>
-      <p><a href="/">Zurück zur Startseite</a></p>
+      <p><a href={p('/')}>Zurück zur Startseite</a></p>
     </div>
   </section>
 </Base>

@@ -1,4 +1,5 @@
 ---
+import { p } from '../lib/pfad';
 import '@fontsource-variable/fraunces/full.css';
 import '@fontsource-variable/dm-sans';
 import '../styles/global.css';
@@ -10,16 +11,19 @@ import site from '../data/site.json';
 interface Props { titel: string; beschreibung: string; schema?: object; }
 const { titel, beschreibung, schema } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+// Vorschau (z. B. auf Netlify): nicht bei Google listen, Formular verschickt nichts
+const vorschau = process.env.NETLIFY === 'true' || process.env.VORSCHAU === 'true';
 ---
 <!doctype html>
-<html lang="de">
+<html lang="de" data-vorschau={vorschau ? 'true' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {vorschau && <meta name="robots" content="noindex, nofollow" />}
     <title>{titel}</title>
     <meta name="description" content={beschreibung} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={p('/favicon.svg')} type="image/svg+xml" />
     <meta name="theme-color" content="#E6E1D9" />
     <meta property="og:title" content={titel} />
     <meta property="og:description" content={beschreibung} />
@@ -30,6 +34,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <a href="#inhalt" class="sr-only skip-link">Zum Inhalt springen</a>
+    {vorschau && <p class="vorschau-hinweis">Entwurf zur Ansicht. Texte und Fotos sind noch Platzhalter, das Formular verschickt nichts.</p>}
     <Header />
     <main id="inhalt">
       <slot />

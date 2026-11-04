@@ -1,4 +1,5 @@
 ---
+import { p } from '../lib/pfad';
 import Base from '../layouts/Base.astro';
 import Bild from '../components/Bild.astro';
 import Print from '../components/Print.astro';
@@ -66,7 +67,7 @@ const schema = {
         <h1>{site.claim}</h1>
         <p class="hero__intro">{site.intro}</p>
         <div class="hero__buttons">
-          <a href="/anfrage/" class="button button--hell">Termin anfragen</a>
+          <a href={p('/anfrage/')} class="button button--hell">Termin anfragen</a>
           <a href="#pakete" class="button button--hell-linie">Pakete ab {abPreis} €</a>
         </div>
         <p class="hero__notiz">Unverbindlich. Du bekommst innerhalb von 24 Stunden eine Antwort.</p>
@@ -142,7 +143,7 @@ const schema = {
       </div>
       <div class="anlaesse">
         {anlaesse.anlaesse.map((a, i) => (
-          <a href={`/${a.slug}/`} class="anlass">
+          <a href={p(`/${a.slug}/`)} class="anlass">
             <Print src={a.bild} alt={a.bildText} zeile={a.name} drehung={[-2, 1.5, -1][i]} />
             <p>{a.kachelText}</p>
             <span class="anlass__link">{a.linkText}</span>
@@ -171,7 +172,7 @@ const schema = {
         <h2>Hi, ich bin {site.inhaber.split(' ')[0]}.</h2>
         <p class="platzhalter-text">[2–3 Sätze über dich: Wer du bist, warum die Fotobox, was dir bei einer Feier wichtig ist.]</p>
         <p>Von der Anfrage bis zur Abholung hast du einen Ansprechpartner: mich. Ich komme aus Bad Hersfeld und bin mit der Memorybox in ganz Osthessen unterwegs.</p>
-        <a href="/anfrage/" class="button button--linie">Schreib mir</a>
+        <a href={p('/anfrage/')} class="button button--linie">Schreib mir</a>
       </div>
     </div>
   </section>

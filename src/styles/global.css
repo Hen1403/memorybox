@@ -134,6 +134,11 @@ a { color: var(--walnuss); }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
+.vorschau-hinweis {
+  margin: 0; padding: 8px var(--rand);
+  background: var(--kiefer); color: var(--holz);
+  font-size: 0.85rem; text-align: center;
+}
 .skip-link:focus {
   position: fixed; top: 12px; left: 12px; z-index: 100;
   width: auto; height: auto; margin: 0; clip: auto;

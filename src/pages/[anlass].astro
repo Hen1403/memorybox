@@ -1,4 +1,5 @@
 ---
+import { p } from '../lib/pfad';
 import Base from '../layouts/Base.astro';
 import Print from '../components/Print.astro';
 import Pakete from '../components/Pakete.astro';
@@ -21,7 +22,7 @@ const { a } = Astro.props;
         <h1>{a.titel}</h1>
         <p class="hero__intro">{a.intro}</p>
         <div class="hero__buttons">
-          <a href={`/anfrage/?anlass=${a.slug}`} class="button button--hell">Termin anfragen</a>
+          <a href={p(`/anfrage/?anlass=${a.slug}`)} class="button button--hell">Termin anfragen</a>
           <a href="#pakete" class="button button--hell-linie">Pakete ansehen</a>
         </div>
         <p class="hero__notiz">Aus Bad Hersfeld, unterwegs in ganz {site.region}. Antwort innerhalb von 24 Stunden.</p>

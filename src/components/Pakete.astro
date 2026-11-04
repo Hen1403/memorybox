@@ -1,4 +1,5 @@
 ---
+import { p } from '../lib/pfad';
 import daten from '../data/pakete.json';
 import site from '../data/site.json';
 interface Props { anlass?: string; }
@@ -6,16 +7,16 @@ const { anlass = '' } = Astro.props;
 const aufpreis = daten.pakete[1].preis - daten.pakete[0].preis;
 ---
 <div class="pakete">
-  {daten.pakete.map((p) => (
-    <article class:list={['paket', { 'paket--empfohlen': p.empfohlen }]}>
-      {p.empfohlen && <span class="paket__badge">Beliebteste Wahl</span>}
-      <h3>{p.name}</h3>
-      <p class="paket__preis"><span>{p.preis}</span> €</p>
-      <p class="paket__text">{p.beschreibung}</p>
+  {daten.pakete.map((paket) => (
+    <article class:list={['paket', { 'paket--empfohlen': paket.empfohlen }]}>
+      {paket.empfohlen && <span class="paket__badge">Beliebteste Wahl</span>}
+      <h3>{paket.name}</h3>
+      <p class="paket__preis"><span>{paket.preis}</span> €</p>
+      <p class="paket__text">{paket.beschreibung}</p>
       <ul>
-        {p.leistungen.map((l) => <li>{l}</li>)}
+        {paket.leistungen.map((l) => <li>{l}</li>)}
       </ul>
-      <a href={`/anfrage/?paket=${p.id}${anlass ? `&anlass=${anlass}` : ''}`} class:list={['button', { 'button--linie': !p.empfohlen }]}>{p.name} anfragen</a>
+      <a href={p(`/anfrage/?paket=${paket.id}${anlass ? `&anlass=${anlass}` : ''}`)} class:list={['button', { 'button--linie': !paket.empfohlen }]}>{paket.name} anfragen</a>
     </article>
   ))}
 </div>

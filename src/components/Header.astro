@@ -1,16 +1,17 @@
 ---
+import { p } from '../lib/pfad';
 import Logo from './Logo.astro';
 ---
 <header class="header">
   <div class="container header__innen">
-    <a href="/" class="header__logo" aria-label="memorybox – zur Startseite"><Logo /></a>
+    <a href={p('/')} class="header__logo" aria-label="memorybox – zur Startseite"><Logo /></a>
     <nav class="header__nav" aria-label="Hauptmenü">
-      <a href="/#pakete">Pakete</a>
-      <a href="/#galerie">Galerie</a>
-      <a href="/#ueber-mich">Über mich</a>
-      <a href="/#fragen">Fragen</a>
+      <a href={p('/#pakete')}>Pakete</a>
+      <a href={p('/#galerie')}>Galerie</a>
+      <a href={p('/#ueber-mich')}>Über mich</a>
+      <a href={p('/#fragen')}>Fragen</a>
     </nav>
-    <a href="/anfrage/" class="button header__cta">Termin anfragen</a>
+    <a href={p('/anfrage/')} class="button header__cta">Termin anfragen</a>
   </div>
 </header>
 

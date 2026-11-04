@@ -1,4 +1,5 @@
 ---
+import { p } from '../lib/pfad';
 // Letzter Aufruf: Datum wählen und direkt in die Anfrage springen
 interface Props { anlass?: string; }
 const { anlass = '' } = Astro.props;
@@ -9,7 +10,7 @@ const { anlass = '' } = Astro.props;
       <h2>Ist dein Datum noch frei?</h2>
       <p>Wähle deinen Wunschtermin. Ich prüfe ihn und melde mich innerhalb von 24 Stunden mit einem unverbindlichen Angebot.</p>
     </div>
-    <form action="/anfrage/" method="get" class="abschluss__form">
+    <form action={p('/anfrage/')} method="get" class="abschluss__form">
       {anlass && <input type="hidden" name="anlass" value={anlass} />}
       <label for="abschluss-datum" class="sr-only">Wunschtermin</label>
       <input id="abschluss-datum" type="date" name="datum" required />

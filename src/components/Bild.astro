@@ -1,8 +1,9 @@
 ---
+import { p } from '../lib/pfad';
 // Zeigt das Foto oder – solange keins hinterlegt ist – einen Platzhalter mit Beschreibung
 interface Props { src?: string; alt: string; class?: string; hoehe?: string; sofort?: boolean; }
 const { src, alt, class: klasse = '', hoehe = '320px', sofort = false } = Astro.props;
 ---
 {src
-  ? <img src={src} alt={alt} class={klasse} loading={sofort ? 'eager' : 'lazy'} fetchpriority={sofort ? 'high' : 'auto'} decoding="async" style={`height:${hoehe};width:100%;object-fit:cover;border-radius:var(--radius)`} />
+  ? <img src={p(src)} alt={alt} class={klasse} loading={sofort ? 'eager' : 'lazy'} fetchpriority={sofort ? 'high' : 'auto'} decoding="async" style={`height:${hoehe};width:100%;object-fit:cover;border-radius:var(--radius)`} />
   : <div class={`platzhalter-bild ${klasse}`} style={`min-height:${hoehe}`} role="img" aria-label={`Platzhalter: ${alt}`}>{alt}</div>}

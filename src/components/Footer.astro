@@ -1,4 +1,5 @@
 ---
+import { p } from '../lib/pfad';
 import Logo from './Logo.astro';
 import site from '../data/site.json';
 import anlaesse from '../data/anlaesse.json';
@@ -12,7 +13,7 @@ import anlaesse from '../data/anlaesse.json';
     <div>
       <h3>Anlässe</h3>
       <ul>
-        {anlaesse.anlaesse.map((a) => <li><a href={`/${a.slug}/`}>Fotobox {a.name}</a></li>)}
+        {anlaesse.anlaesse.map((a) => <li><a href={p(`/${a.slug}/`)}>Fotobox {a.name}</a></li>)}
       </ul>
     </div>
     <div>
@@ -27,7 +28,7 @@ import anlaesse from '../data/anlaesse.json';
   </div>
   <div class="container footer__unten">
     <span>© {new Date().getFullYear()} memorybox, {site.inhaber}</span>
-    <span class="footer__recht"><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a></span>
+    <span class="footer__recht"><a href={p('/impressum/')}>Impressum</a><a href={p('/datenschutz/')}>Datenschutz</a></span>
   </div>
 </footer>
 

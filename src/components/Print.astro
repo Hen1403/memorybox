@@ -1,4 +1,5 @@
 ---
+import { p } from '../lib/pfad';
 // Ein Ausdruck aus der Box: Foto oben, Drucklayout mit Beschriftung unten
 interface Props {
   src?: string;
@@ -14,7 +15,7 @@ const { src, alt, zeile = '', datum = '', drehung = 0, class: klasse = '', sofor
 <figure class:list={['print', klasse]} style={`--drehung:${drehung}deg`}>
   <div class="print__foto">
     {src
-      ? <img src={src} alt={alt} loading={sofort ? 'eager' : 'lazy'} decoding="async" />
+      ? <img src={p(src)} alt={alt} loading={sofort ? 'eager' : 'lazy'} decoding="async" />
       : <div class="print__platzhalter" role="img" aria-label={`Platzhalter: ${alt}`}><span>{alt}</span></div>}
   </div>
   {(zeile || datum) && (
