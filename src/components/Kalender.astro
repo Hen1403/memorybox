@@ -1,0 +1,129 @@
+---
+// Monatskalender: belegte Tage kommen aus termine.json und werden beim Bauen der Seite eingetragen
+import termine from '../data/termine.json';
+
+function tageZwischen(von: string, bis: string) {
+  const tage: string[] = [];
+  const d = new Date(`${von}T12:00:00Z`);
+  const ende = new Date(`${bis || von}T12:00:00Z`);
+  while (d <= ende) {
+    tage.push(d.toISOString().slice(0, 10));
+    d.setUTCDate(d.getUTCDate() + 1);
+  }
+  return tage;
+}
+const belegt = [...new Set(termine.belegt.flatMap((t) => tageZwischen(t.von, t.bis)))];
+---
+<div class="kalender" data-belegt={JSON.stringify(belegt)}>
+  <div class="kalender__kopf">
+    <button type="button" class="kalender__pfeil" data-richtung="-1" aria-label="Vorheriger Monat">‹</button>
+    <span class="kalender__monat" aria-live="polite"></span>
+    <button type="button" class="kalender__pfeil" data-richtung="1" aria-label="Nächster Monat">›</button>
+  </div>
+  <div class="kalender__wochentage" aria-hidden="true">
+    <span>Mo</span><span>Di</span><span>Mi</span><span>Do</span><span>Fr</span><span>Sa</span><span>So</span>
+  </div>
+  <div class="kalender__tage" role="group" aria-label="Tage des Monats"></div>
+  <div class="kalender__legende">
+    <span><i class="punkt punkt--frei"></i> frei</span>
+    <span><i class="punkt punkt--belegt"></i> belegt</span>
+  </div>
+</div>
+
+<script>
+  const MONATE = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const iso = (j: number, m: number, t: number) => `${j}-${String(m + 1).padStart(2, '0')}-${String(t).padStart(2, '0')}`;
+
+  document.querySelectorAll<HTMLElement>('.kalender').forEach((el) => {
+    const belegt = new Set<string>(JSON.parse(el.dataset.belegt || '[]'));
+    const heute = new Date();
+    const heuteIso = iso(heute.getFullYear(), heute.getMonth(), heute.getDate());
+    const maxMonate = 24;
+    let jahr = heute.getFullYear();
+    let monat = heute.getMonth();
+    let gewaehlt = '';
+
+    const monatEl = el.querySelector('.kalender__monat')!;
+    const tageEl = el.querySelector('.kalender__tage')!;
+    const [zurueck, vor] = el.querySelectorAll<HTMLButtonElement>('.kalender__pfeil');
+
+    function zeichnen() {
+      monatEl.textContent = `${MONATE[monat]} ${jahr}`;
+      const ersterWochentag = (new Date(jahr, monat, 1).getDay() + 6) % 7;
+      const anzahl = new Date(jahr, monat + 1, 0).getDate();
+      let html = '<span></span>'.repeat(ersterWochentag);
+      for (let t = 1; t <= anzahl; t++) {
+        const d = iso(jahr, monat, t);
+        const vergangen = d < heuteIso;
+        const istBelegt = belegt.has(d);
+        const status = vergangen ? 'vergangen' : istBelegt ? 'belegt' : 'frei';
+        const label = `${t}. ${MONATE[monat]} ${jahr}${istBelegt ? ', belegt' : vergangen ? '' : ', frei'}`;
+        html += `<button type="button" class="tag tag--${status}${d === gewaehlt ? ' tag--gewaehlt' : ''}" data-datum="${d}" aria-label="${label}" aria-pressed="${d === gewaehlt}" ${status !== 'frei' ? 'disabled' : ''}>${t}</button>`;
+      }
+      tageEl.innerHTML = html;
+      const abstand = (jahr - heute.getFullYear()) * 12 + monat - heute.getMonth();
+      zurueck.disabled = abstand <= 0;
+      vor.disabled = abstand >= maxMonate;
+    }
+
+    el.addEventListener('click', (e) => {
+      const ziel = e.target as HTMLElement;
+      const pfeil = ziel.closest<HTMLButtonElement>('.kalender__pfeil');
+      if (pfeil) {
+        monat += Number(pfeil.dataset.richtung);
+        if (monat < 0) { monat = 11; jahr--; }
+        if (monat > 11) { monat = 0; jahr++; }
+        zeichnen();
+        return;
+      }
+      const tag = ziel.closest<HTMLButtonElement>('.tag--frei');
+      if (tag) waehlen(tag.dataset.datum!);
+    });
+
+    function waehlen(d: string) {
+      gewaehlt = d;
+      const [j, m] = d.split('-').map(Number);
+      jahr = j;
+      monat = m - 1;
+      zeichnen();
+      el.dispatchEvent(new CustomEvent('datum', { bubbles: true, detail: { datum: d, belegt: belegt.has(d) } }));
+    }
+
+    // Vorauswahl von außen (z. B. aus der URL)
+    el.addEventListener('vorauswahl', (e) => {
+      const d = (e as CustomEvent).detail as string;
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(d) || d < heuteIso) return;
+      if (belegt.has(d)) {
+        const [j, m] = d.split('-').map(Number);
+        jahr = j; monat = m - 1; zeichnen();
+        el.dispatchEvent(new CustomEvent('datum', { bubbles: true, detail: { datum: d, belegt: true } }));
+      } else {
+        waehlen(d);
+      }
+    });
+
+    zeichnen();
+  });
+</script>
+
+<style>
+  .kalender { background: var(--papier); border-radius: var(--radius); padding: 20px; max-width: 420px; }
+  .kalender__kopf { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .kalender__monat { font-family: var(--font-titel); font-size: 1.25rem; }
+  .kalender__pfeil { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--rahmen-feld); background: transparent; font-size: 1.4rem; color: var(--walnuss); cursor: pointer; transition: transform 120ms var(--ease-out); }
+  .kalender__pfeil:disabled { opacity: 0.3; cursor: default; }
+  .kalender__wochentage, .kalender__tage { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .kalender__wochentage { font-size: 0.78rem; color: var(--kohle-weich); margin-bottom: 6px; }
+  .kalender__tage :global(.tag) { aspect-ratio: 1; border: 0; border-radius: 50%; font: inherit; font-size: 0.95rem; background: transparent; color: var(--kohle); cursor: pointer; }
+  .kalender__tage :global(.tag--frei) { transition: transform 120ms var(--ease-out), background-color 150ms ease; }
+  .kalender__tage :global(.tag--frei:active) { transform: scale(0.92); }
+  @media (hover: hover) and (pointer: fine) { .kalender__tage :global(.tag--frei:hover) { background: var(--honig-hell); } }
+  .kalender__pfeil:not(:disabled):active { transform: scale(0.94); }
+  .kalender__tage :global(.tag--belegt) { color: var(--text-leise); text-decoration: line-through; background: #EDE4D8; cursor: not-allowed; }
+  .kalender__tage :global(.tag--vergangen) { color: #CFC4B6; cursor: default; }
+  .kalender__tage :global(.tag--gewaehlt) { background: var(--walnuss) !important; color: var(--papier); }
+  .kalender__legende { display: flex; gap: 18px; margin-top: 14px; font-size: 0.82rem; color: var(--kohle-weich); }
+  .punkt { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin-right: 4px; }
+  .punkt--frei { border: 1.5px solid var(--rahmen-feld); }
+  .punkt--belegt { background: #DCCFBF; }
+</style>

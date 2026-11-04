@@ -1,0 +1,37 @@
+# Baut die Seite bei jeder Änderung und lädt sie per FTP zum Hosting-Anbieter hoch.
+# Zugangsdaten unter GitHub → Settings → Secrets and variables → Actions eintragen:
+# FTP_SERVER, FTP_USERNAME, FTP_PASSWORD
+name: Veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FTP_SERVER: ${{ secrets.FTP_SERVER }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      # Solange noch kein Hosting eingetragen ist, wird nur gebaut (Test), nicht hochgeladen
+      - uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        if: env.FTP_SERVER != ''
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          server-dir: ./

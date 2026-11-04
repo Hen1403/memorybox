@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import Bild from '../components/Bild.astro';
+import Print from '../components/Print.astro';
+import Pakete from '../components/Pakete.astro';
+import Faq from '../components/Faq.astro';
+import Abschluss from '../components/Abschluss.astro';
+import site from '../data/site.json';
+import pakete from '../data/pakete.json';
+import faq from '../data/faq.json';
+import anlaesse from '../data/anlaesse.json';
+import galerie from '../data/galerie.json';
+
+const abPreis = Math.min(...pakete.pakete.map((p) => p.preis));
+
+const vorteile = [
+  { titel: 'Handgebaut aus Holz', text: 'Ein Einzelstück, das in jeder Location gut aussieht.' },
+  { titel: 'Ich baue auf und ab', text: 'Geliefert vor der Feier, abgeholt am nächsten Tag.' },
+  { titel: 'Druck in 10 Sekunden', text: 'Jeder Gast nimmt sein Foto direkt mit.' },
+  { titel: 'Alle Fotos online', text: 'Nach der Feier bekommst du den Link zur Galerie.' },
+];
+
+const ablauf = [
+  { titel: 'Termin anfragen', text: 'Wunschdatum wählen, Paket aussuchen. Ich melde mich innerhalb von 24 Stunden mit einem Angebot.' },
+  { titel: 'Ich liefere und baue auf', text: 'Rechtzeitig vor deiner Feier steht die Box bereit, Requisiten inklusive.' },
+  { titel: 'Feiern, ich hole ab', text: 'Am nächsten Tag hole ich die Box wieder ab. Die Fotos kommen per Link.' },
+];
+
+// Beispiel-Ausdrucke im Einstieg – zeigen, wie das Drucklayout aussieht
+const stapel = [
+  { zeile: 'Anna & Ben', datum: '12. Juni 2027', alt: 'Brautpaar mit Requisiten', drehung: -7 },
+  { zeile: 'Mias 30.', datum: '4. September 2027', alt: 'Freundinnen vor dem Gold-Lametta', drehung: 4 },
+  { zeile: 'Sommerfest 2027', datum: '9. Juli 2027', alt: 'Kollegen mit Schildern', drehung: -2 },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'LocalBusiness',
+      name: 'memorybox – Die Fotobox aus Holz',
+      description: site.intro,
+      telephone: site.telefon,
+      email: site.email,
+      url: Astro.site?.toString(),
+      areaServed: ['Bad Hersfeld', 'Hersfeld-Rotenburg', 'Osthessen'],
+      address: { '@type': 'PostalAddress', addressLocality: 'Bad Hersfeld', postalCode: '36251', addressCountry: 'DE' },
+      priceRange: `ab ${abPreis} €`,
+      sameAs: [`https://www.instagram.com/${site.instagram}/`],
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faq.fragen.map((f) => ({ '@type': 'Question', name: f.frage, acceptedAnswer: { '@type': 'Answer', text: f.antwort } })),
+    },
+  ],
+};
+---
+<Base
+  titel="Fotobox mieten in Bad Hersfeld & Osthessen | memorybox – Die Fotobox aus Holz"
+  beschreibung="Handgebaute Vintage-Fotobox mit Sofortdruck für Hochzeit, Geburtstag und Firmenfeier. Persönlich geliefert, aufgebaut und abgeholt in Hersfeld-Rotenburg. Ab 279 €."
+  schema={schema}
+>
+  <section class="hero holz">
+    <div class="container hero__raster">
+      <div class="hero__text">
+        <h1>{site.claim}</h1>
+        <p class="hero__intro">{site.intro}</p>
+        <div class="hero__buttons">
+          <a href="/anfrage/" class="button button--hell">Termin anfragen</a>
+          <a href="#pakete" class="button button--hell-linie">Pakete ab {abPreis} €</a>
+        </div>
+        <p class="hero__notiz">Unverbindlich. Du bekommst innerhalb von 24 Stunden eine Antwort.</p>
+      </div>
+      <div class="stapel" aria-label="Beispiele für Ausdrucke aus der Box">
+        {stapel.map((s, i) => (
+          <Print alt={s.alt} zeile={s.zeile} datum={s.datum} drehung={s.drehung} class={`stapel__print stapel__print--${i + 1}`} sofort />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="vorteile" aria-label="Das ist immer dabei">
+    <ul class="container vorteile__liste">
+      {vorteile.map((v) => (
+        <li>
+          <strong>{v.titel}</strong>
+          <span>{v.text}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="abschnitt" id="ablauf">
+    <div class="container">
+      <h2 class="ablauf__titel">So läuft's ab</h2>
+      <ol class="ablauf">
+        {ablauf.map((s) => (
+          <li>
+            <h3>{s.titel}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="abschnitt abschnitt--papier" id="die-box">
+    <div class="container zwei-spalten">
+      <div class="bildpaar">
+        <Bild alt="Die Memorybox von vorne" hoehe="440px" />
+        <Bild alt="Detail: Holz und Reflektor" hoehe="260px" />
+      </div>
+      <div>
+        <h2>Selbst gebaut. Aus massivem Holz.</h2>
+        <p>Die Memorybox ist kein Plastikkasten von der Stange. Ich habe sie selbst gebaut, aus einer massiven Holzkiste, mit einer professionellen Kamera und einem Fotodrucker, der jedes Bild in unter zehn Sekunden ausgibt.</p>
+        <p>Im Vintage-Look passt sie in die Scheune genauso wie in den Festsaal.</p>
+        <p class="platzhalter-text">[Hier kommt deine Geschichte: Wie kam es zur Box, wie lange hast du gebaut?]</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="abschnitt" id="pakete">
+    <div class="container">
+      <div class="kopf kopf--mitte">
+        <h2>Zwei Pakete. Alles drin.</h2>
+        <p>Lieferung, Aufbau, Abholung am nächsten Tag, Requisiten und Online-Galerie sind immer dabei. Der Unterschied ist der Drucker.</p>
+      </div>
+      <Pakete />
+      {site.bewertung.zeigen && (
+        <figure class="zitat">
+          <blockquote>„{site.bewertung.text}“</blockquote>
+          <figcaption>{site.bewertung.name}, {site.bewertung.anlass}</figcaption>
+        </figure>
+      )}
+    </div>
+  </section>
+
+  <section class="abschnitt abschnitt--papier" id="anlaesse">
+    <div class="container">
+      <div class="kopf">
+        <h2>Für jede Feier, die in Erinnerung bleiben soll</h2>
+      </div>
+      <div class="anlaesse">
+        {anlaesse.anlaesse.map((a, i) => (
+          <a href={`/${a.slug}/`} class="anlass">
+            <Print src={a.bild} alt={a.bildText} zeile={a.name} drehung={[-2, 1.5, -1][i]} />
+            <p>{a.kachelText}</p>
+            <span class="anlass__link">{a.linkText}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="abschnitt" id="galerie">
+    <div class="container">
+      <div class="kopf kopf--mitte">
+        <h2>Echte Feiern. Echte Fotos.</h2>
+        <p>Weitere Bilder findest du auf Instagram unter <a href={`https://www.instagram.com/${site.instagram}/`} rel="noopener" target="_blank">@{site.instagram}</a>.</p>
+      </div>
+      <div class="galerie">
+        {galerie.bilder.map((b, i) => <Print src={b.bild} alt={b.alt} drehung={[-1.5, 1, -0.5, 2, -1, 0.5][i % 6]} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="abschnitt abschnitt--papier" id="ueber-mich">
+    <div class="container zwei-spalten zwei-spalten--schmal">
+      <Bild alt={`Porträt von ${site.inhaber} mit der Box`} hoehe="420px" />
+      <div>
+        <h2>Hi, ich bin {site.inhaber.split(' ')[0]}.</h2>
+        <p class="platzhalter-text">[2–3 Sätze über dich: Wer du bist, warum die Fotobox, was dir bei einer Feier wichtig ist.]</p>
+        <p>Von der Anfrage bis zur Abholung hast du einen Ansprechpartner: mich. Ich komme aus Bad Hersfeld und bin mit der Memorybox in ganz Osthessen unterwegs.</p>
+        <a href="/anfrage/" class="button button--linie">Schreib mir</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="abschnitt" id="fragen">
+    <div class="container">
+      <div class="kopf kopf--mitte">
+        <h2>Häufige Fragen</h2>
+      </div>
+      <Faq fragen={faq.fragen} />
+    </div>
+  </section>
+
+  <Abschluss />
+</Base>
+
+<style>
+  .hero { padding-block: clamp(48px, 8vw, 112px) clamp(64px, 9vw, 128px); overflow: hidden; }
+  .hero__raster { display: grid; grid-template-columns: 1.1fr 1fr; gap: clamp(40px, 6vw, 88px); align-items: center; }
+  .hero h1 { font-size: clamp(2.6rem, 5.6vw, 4.6rem); }
+  .hero__intro { font-size: 1.15rem; max-width: 30em; color: var(--honig-hell); }
+  .hero__buttons { display: flex; gap: 12px; flex-wrap: wrap; margin: 32px 0 18px; }
+  .hero__notiz { font-size: 0.92rem; color: var(--kiefer); }
+
+  .stapel { position: relative; height: clamp(380px, 46vw, 540px); }
+  .stapel :global(.stapel__print) {
+    position: absolute;
+    width: min(62%, 300px);
+    animation: ausdruck 0.9s cubic-bezier(0.2, 0.8, 0.25, 1) both;
+  }
+  .stapel :global(.stapel__print--1) { left: 0; top: 10%; animation-delay: 0.15s; }
+  .stapel :global(.stapel__print--2) { right: 0; top: 0; animation-delay: 0.45s; }
+  .stapel :global(.stapel__print--3) { left: 22%; top: 24%; animation-delay: 0.75s; }
+  @keyframes ausdruck {
+    from { transform: translateY(-48px) rotate(0deg); opacity: 0; }
+    60% { opacity: 1; }
+    to { transform: rotate(var(--drehung)); opacity: 1; }
+  }
+
+  .vorteile { background: var(--papier); }
+  .vorteile__liste { list-style: none; margin-block: 0; padding: 28px 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .vorteile__liste li { display: grid; gap: 2px; }
+  .vorteile__liste strong { font-family: var(--font-titel); font-variation-settings: 'SOFT' 100; font-weight: 500; font-size: 1.12rem; }
+  .vorteile__liste span { font-size: 0.93rem; color: var(--kohle-weich); }
+
+  .ablauf__titel { margin-bottom: 40px; }
+  .ablauf { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+  .ablauf li { position: relative; padding-top: 36px; }
+  .ablauf li::before { content: ''; position: absolute; top: 0; left: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--walnuss); }
+  .ablauf li:not(:last-child)::after { content: ''; position: absolute; top: 6px; left: 22px; right: -32px; height: 2px; background: var(--kiefer); }
+  .ablauf p { color: var(--kohle-weich); }
+
+  .zwei-spalten { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 88px); align-items: center; }
+  .zwei-spalten--schmal { grid-template-columns: 0.8fr 1fr; }
+  .bildpaar { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: end; }
+  .platzhalter-text { background: var(--honig-hell); color: var(--walnuss); padding: 10px 14px; border-radius: var(--radius); font-size: 0.92rem; }
+
+  .zitat { max-width: 640px; margin: 56px auto 0; text-align: center; }
+  .zitat blockquote { margin: 0 0 10px; font-family: var(--font-titel); font-size: 1.4rem; }
+  .zitat figcaption { color: var(--walnuss); font-size: 0.9rem; }
+
+  .anlaesse { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 4vw, 48px); }
+  .anlass { text-decoration: none; color: inherit; display: block; }
+  .anlass p { color: var(--kohle-weich); margin: 22px 0 6px; }
+  .anlass__link { color: var(--walnuss); font-weight: 500; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+  @media (hover: hover) and (pointer: fine) { .anlass:hover .anlass__link { text-decoration-thickness: 2px; } }
+
+  .galerie { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); }
+
+  @media (max-width: 900px) {
+    .vorteile__liste { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .anlaesse { grid-template-columns: 1fr; max-width: 420px; }
+  }
+  @media (max-width: 760px) {
+    .hero__raster, .zwei-spalten, .zwei-spalten--schmal, .ablauf { grid-template-columns: 1fr; }
+    .ablauf li { padding: 0 0 0 34px; }
+    .ablauf li::before { top: 6px; }
+    .ablauf li:not(:last-child)::after { top: 26px; left: 6px; right: auto; bottom: -34px; width: 2px; height: auto; }
+    .stapel { height: 340px; max-width: 360px; }
+    .galerie { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

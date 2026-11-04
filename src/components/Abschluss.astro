@@ -1,0 +1,34 @@
+---
+// Letzter Aufruf: Datum wählen und direkt in die Anfrage springen
+interface Props { anlass?: string; }
+const { anlass = '' } = Astro.props;
+---
+<section class="abschnitt holz abschluss">
+  <div class="container">
+    <div class="kopf kopf--mitte">
+      <h2>Ist dein Datum noch frei?</h2>
+      <p>Wähle deinen Wunschtermin. Ich prüfe ihn und melde mich innerhalb von 24 Stunden mit einem unverbindlichen Angebot.</p>
+    </div>
+    <form action="/anfrage/" method="get" class="abschluss__form">
+      {anlass && <input type="hidden" name="anlass" value={anlass} />}
+      <label for="abschluss-datum" class="sr-only">Wunschtermin</label>
+      <input id="abschluss-datum" type="date" name="datum" required />
+      <button type="submit" class="button button--hell">Termin anfragen</button>
+    </form>
+  </div>
+</section>
+
+<script>
+  // Vergangene Tage im Datumsfeld sperren
+  const heute = new Date();
+  const min = `${heute.getFullYear()}-${String(heute.getMonth() + 1).padStart(2, '0')}-${String(heute.getDate()).padStart(2, '0')}`;
+  document.querySelectorAll<HTMLInputElement>('.abschluss__form input[type="date"]').forEach((f) => (f.min = min));
+</script>
+
+<style>
+  .abschluss__form { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .abschluss__form input {
+    font: inherit; padding: 13px 20px; border-radius: 999px; border: 1.5px solid var(--honig-hell);
+    background: transparent; color: var(--papier); color-scheme: dark; min-width: 220px;
+  }
+</style>

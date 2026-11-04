@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /danke/
+
+Sitemap: https://www.memoryboxfotobox.de/sitemap.xml

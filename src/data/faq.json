@@ -1,0 +1,32 @@
+{
+  "fragen": [
+    {
+      "frage": "Wie viel Platz braucht die Box?",
+      "antwort": "Mit Hintergrund etwa [X × Y] Meter. Ein ruhiger Platz am Rand der Tanzfläche ist ideal."
+    },
+    {
+      "frage": "Brauche ich einen Stromanschluss?",
+      "antwort": "Ja, [Anzahl] normale Steckdose(n) in der Nähe reichen."
+    },
+    {
+      "frage": "Wann baust du auf und ab?",
+      "antwort": "Ich komme rund [X] Stunden vor Beginn und baue in etwa [X] Minuten auf. Abgeholt wird die Box am nächsten Tag, du musst nach der Feier also nichts mehr tun."
+    },
+    {
+      "frage": "Was kostet die Anfahrt?",
+      "antwort": "Bis 20 km rund um Bad Hersfeld ist die Anfahrt inklusive. Darüber berechne ich [Preis] pro Kilometer."
+    },
+    {
+      "frage": "Wie kommen die Gäste an die Fotos?",
+      "antwort": "Nach der Feier bekommst du einen Link zur Online-Galerie, den du an alle Gäste weitergeben kannst. Die Galerie bleibt [Zeitraum] online."
+    },
+    {
+      "frage": "Kann die Box auch draußen stehen?",
+      "antwort": "[Antwort folgt, z. B. unter einem Pavillon, geschützt vor Regen und direkter Sonne.]"
+    },
+    {
+      "frage": "Wie läuft die Buchung ab?",
+      "antwort": "Du fragst deinen Wunschtermin unverbindlich an, ich melde mich innerhalb von 24 Stunden mit einem Angebot. [Anzahlung und Storno folgen.]"
+    }
+  ]
+}

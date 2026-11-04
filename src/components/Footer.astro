@@ -1,0 +1,47 @@
+---
+import Logo from './Logo.astro';
+import site from '../data/site.json';
+import anlaesse from '../data/anlaesse.json';
+---
+<footer class="footer">
+  <div class="container footer__raster">
+    <div>
+      <Logo farbe="var(--honig-hell)" />
+      <p class="footer__text">Handgebaute Vintage-Fotobox für Hochzeiten, Geburtstage und Firmenfeiern in {site.region}.</p>
+    </div>
+    <div>
+      <h3>Anlässe</h3>
+      <ul>
+        {anlaesse.anlaesse.map((a) => <li><a href={`/${a.slug}/`}>Fotobox {a.name}</a></li>)}
+      </ul>
+    </div>
+    <div>
+      <h3>Kontakt</h3>
+      <ul>
+        <li><a href={`tel:${site.telefon.replace(/\s/g, '')}`}>{site.telefonAnzeige}</a></li>
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        <li><a href={`https://www.instagram.com/${site.instagram}/`} rel="noopener" target="_blank">Instagram @{site.instagram}</a></li>
+        <li><a href={`https://wa.me/${site.whatsapp}`} rel="noopener" target="_blank">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__unten">
+    <span>© {new Date().getFullYear()} memorybox, {site.inhaber}</span>
+    <span class="footer__recht"><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a></span>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--kohle); color: #CBBFB0; padding-top: 64px; font-size: 0.95rem; }
+  .footer :global(.logo__name) { color: var(--papier); }
+  .footer :global(.logo__zusatz) { color: var(--honig); }
+  .footer__raster { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; padding-bottom: 48px; }
+  .footer__text { margin-top: 16px; max-width: 360px; }
+  .footer h3 { font-size: 1.05rem; color: var(--papier); }
+  .footer__recht { display: flex; gap: 20px; }
+  .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .footer a { color: #CBBFB0; text-decoration: none; }
+  @media (hover: hover) and (pointer: fine) { .footer a:hover { color: var(--papier); } }
+  .footer__unten { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding-block: 20px 28px; font-size: 0.85rem; }
+  @media (max-width: 760px) { .footer__raster { grid-template-columns: 1fr; } }
+</style>

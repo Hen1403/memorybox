@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../data/site.json';
+---
+<Base titel="Danke für deine Anfrage | memorybox" beschreibung="Deine Anfrage ist angekommen.">
+  <section class="abschnitt danke">
+    <div class="container kopf kopf--mitte">
+      <h1>Danke! Ich melde mich innerhalb von 24 Stunden.</h1>
+      <p>Du bekommst gleich eine Bestätigung per E-Mail. Schau zur Sicherheit auch im Spam-Ordner nach.</p>
+      <p class="vorschau" hidden>Vorschau: Lokal wird keine E-Mail verschickt, das passiert erst auf dem Server.</p>
+      <div class="danke__wege">
+        <a href={`https://wa.me/${site.whatsapp}`} class="button button--linie" rel="noopener" target="_blank">Eilig? Schreib mir auf WhatsApp</a>
+        <a href={`https://www.instagram.com/${site.instagram}/`} class="button button--linie" rel="noopener" target="_blank">Fotos auf Instagram ansehen</a>
+      </div>
+      <p><a href="/">Zurück zur Startseite</a></p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  if (new URLSearchParams(location.search).has('vorschau')) {
+    document.querySelector<HTMLElement>('.vorschau')!.hidden = false;
+  }
+</script>
+
+<style>
+  .danke { min-height: 60vh; }
+  .danke h1 { font-size: clamp(2rem, 5vw, 3rem); }
+  .danke__wege { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin: 32px 0; }
+  .vorschau { background: var(--honig-hell); border-radius: 8px; padding: 10px 14px; color: var(--walnuss); font-size: 0.9rem; }
+</style>

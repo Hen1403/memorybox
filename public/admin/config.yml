@@ -1,0 +1,140 @@
+# Bearbeitungsbereich unter /admin – jede gespeicherte Änderung baut die Seite neu.
+backend:
+  name: github
+  repo: Hen1403/memorybox
+  branch: main
+
+media_folder: public/bilder
+public_folder: /bilder
+
+collections:
+  - name: inhalte
+    label: Inhalte
+    files:
+      - name: termine
+        label: Belegte Tage
+        file: src/data/termine.json
+        format: json
+        fields:
+          - name: belegt
+            label: Belegte Tage
+            label_singular: Belegung
+            widget: list
+            summary: "{{von}} – {{bis}}"
+            fields:
+              - { name: von, label: Von, widget: datetime, time_format: false, format: "YYYY-MM-DD", date_format: "DD.MM.YYYY" }
+              - { name: bis, label: Bis (bei einem Tag gleich wie „Von“), widget: datetime, time_format: false, format: "YYYY-MM-DD", date_format: "DD.MM.YYYY" }
+              - { name: notiz, label: Notiz (nur hier sichtbar – keine Kundennamen), widget: string, required: false }
+
+      - name: pakete
+        label: Pakete und Preise
+        file: src/data/pakete.json
+        format: json
+        fields:
+          - name: pakete
+            label: Pakete
+            label_singular: Paket
+            widget: list
+            summary: "{{name}} – {{preis}} €"
+            fields:
+              - { name: id, label: Kürzel (nicht ändern), widget: string }
+              - { name: name, label: Name, widget: string }
+              - { name: preis, label: Preis in €, widget: number, value_type: int }
+              - { name: beschreibung, label: Kurzbeschreibung, widget: string }
+              - { name: empfohlen, label: Als „Beliebteste Wahl“ hervorheben, widget: boolean, default: false }
+              - { name: leistungen, label: Leistungen, widget: list, field: { name: leistung, label: Leistung, widget: string } }
+          - name: extras
+            label: Extras
+            label_singular: Extra
+            widget: list
+            summary: "{{name}} – {{preis}}"
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: preis, label: Preis (Text, z. B. „ab 19 €“), widget: string }
+              - { name: text, label: Beschreibung, widget: string }
+
+      - name: faq
+        label: Häufige Fragen
+        file: src/data/faq.json
+        format: json
+        fields:
+          - name: fragen
+            label: Fragen
+            label_singular: Frage
+            widget: list
+            summary: "{{frage}}"
+            fields:
+              - { name: frage, label: Frage, widget: string }
+              - { name: antwort, label: Antwort, widget: text }
+
+      - name: galerie
+        label: Galerie
+        file: src/data/galerie.json
+        format: json
+        fields:
+          - name: bilder
+            label: Bilder
+            label_singular: Bild
+            widget: list
+            summary: "{{alt}}"
+            fields:
+              - { name: bild, label: Foto, widget: image, required: false }
+              - { name: alt, label: Bildbeschreibung (für Google und Screenreader), widget: string }
+
+      - name: anlaesse
+        label: Anlass-Seiten
+        file: src/data/anlaesse.json
+        format: json
+        fields:
+          - name: anlaesse
+            label: Anlässe
+            label_singular: Anlass
+            widget: list
+            allow_add: false
+            allow_remove: false
+            summary: "{{name}}"
+            fields:
+              - { name: slug, label: Adresse (nicht ändern), widget: string }
+              - { name: name, label: Name, widget: string }
+              - { name: kachelText, label: Text auf der Startseiten-Kachel, widget: string }
+              - { name: linkText, label: Linktext auf der Startseite, widget: string }
+              - { name: seoTitel, label: Titel für Google, widget: string }
+              - { name: seoBeschreibung, label: Beschreibung für Google, widget: text }
+              - { name: titel, label: Überschrift, widget: string }
+              - { name: intro, label: Einleitung, widget: text }
+              - name: punkte
+                label: Drei Argumente
+                widget: list
+                fields:
+                  - { name: titel, label: Titel, widget: string }
+                  - { name: text, label: Text, widget: text }
+              - { name: bild, label: Foto, widget: image, required: false }
+              - { name: bildText, label: Bildbeschreibung, widget: string }
+
+      - name: site
+        label: Kontakt und Allgemeines
+        file: src/data/site.json
+        format: json
+        fields:
+          - { name: name, label: Name, widget: hidden }
+          - { name: zusatz, label: Zusatz zum Namen, widget: string }
+          - { name: region, label: Region, widget: string }
+          - { name: claim, label: Claim (große Überschrift), widget: string }
+          - { name: intro, label: Einleitung auf der Startseite, widget: text }
+          - { name: inhaber, label: Inhaber, widget: string }
+          - { name: telefon, label: Telefon (international, z. B. +49 173 …), widget: string }
+          - { name: telefonAnzeige, label: Telefon (wie angezeigt), widget: string }
+          - { name: whatsapp, label: WhatsApp-Nummer (nur Ziffern, mit 49), widget: string }
+          - { name: email, label: E-Mail, widget: string }
+          - { name: instagram, label: Instagram-Name, widget: string }
+          - { name: antwortzeit, label: Antwortzeit, widget: string }
+          - { name: anfahrtInklusiveKm, label: Anfahrt inklusive bis (km), widget: number, value_type: int }
+          - name: bewertung
+            label: Bewertung unter den Paketen
+            widget: object
+            fields:
+              - { name: zeigen, label: Anzeigen, widget: boolean, default: false }
+              - { name: text, label: Text, widget: text }
+              - { name: name, label: Name, widget: string }
+              - { name: anlass, label: Anlass und Monat, widget: string }
+          - { name: googleProfilUrl, label: Link zum Google-Profil, widget: string, required: false }

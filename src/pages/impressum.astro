@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../data/site.json';
+---
+<Base titel="Impressum | memorybox" beschreibung="Impressum der memorybox Fotobox, Bad Hersfeld.">
+  <section class="abschnitt">
+    <div class="container text">
+      <h1>Impressum</h1>
+      <h2>Angaben gemäß § 5 DDG</h2>
+      <p>{site.inhaber}<br />memorybox – Die Fotobox aus Holz<br />Am Frauenberg 113<br />36251 Bad Hersfeld</p>
+      <h2>Kontakt</h2>
+      <p>Telefon: {site.telefonAnzeige}<br />E-Mail: <a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <h2>Umsatzsteuer</h2>
+      <p>Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz: DE361294282</p>
+      <p>Gemäß § 19 UStG wird keine Umsatzsteuer berechnet (Kleinunternehmerregelung).</p>
+      <h2>Verbraucherstreitbeilegung</h2>
+      <p>Ich bin nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .text { max-width: 720px; }
+  .text h1 { font-size: clamp(2.2rem, 5vw, 3rem); }
+  .text h2 { font-size: 1.3rem; margin-top: 2em; }
+</style>

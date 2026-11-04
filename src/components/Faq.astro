@@ -1,0 +1,23 @@
+---
+interface Props { fragen: { frage: string; antwort: string }[]; }
+const { fragen } = Astro.props;
+---
+<div class="faq">
+  {fragen.map((f) => (
+    <details>
+      <summary>{f.frage}</summary>
+      <p>{f.antwort}</p>
+    </details>
+  ))}
+</div>
+
+<style>
+  .faq { max-width: 760px; margin-inline: auto; display: grid; gap: 6px; }
+  details { background: var(--papier); border-radius: var(--radius); padding-inline: 22px; }
+  :global(.abschnitt--papier) details { background: var(--leinen); }
+  summary { list-style: none; cursor: pointer; padding: 22px 40px 22px 0; position: relative; font-family: var(--font-titel); font-size: 1.2rem; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; position: absolute; right: 4px; top: 50%; transform: translateY(-50%); font-family: var(--font-text); font-size: 1.5rem; color: var(--walnuss); transition: transform 200ms var(--ease-out); }
+  details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+  details p { color: var(--kohle-weich); padding-bottom: 22px; margin: 0; max-width: 640px; }
+</style>

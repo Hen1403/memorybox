@@ -1,0 +1,66 @@
+---
+// Ein Ausdruck aus der Box: Foto oben, Drucklayout mit Beschriftung unten
+interface Props {
+  src?: string;
+  alt: string;
+  zeile?: string;
+  datum?: string;
+  drehung?: number;
+  class?: string;
+  sofort?: boolean;
+}
+const { src, alt, zeile = '', datum = '', drehung = 0, class: klasse = '', sofort = false } = Astro.props;
+---
+<figure class:list={['print', klasse]} style={`--drehung:${drehung}deg`}>
+  <div class="print__foto">
+    {src
+      ? <img src={src} alt={alt} loading={sofort ? 'eager' : 'lazy'} decoding="async" />
+      : <div class="print__platzhalter" role="img" aria-label={`Platzhalter: ${alt}`}><span>{alt}</span></div>}
+  </div>
+  {(zeile || datum) && (
+    <figcaption class="print__layout">
+      <span class="print__zeile">{zeile}</span>
+      <span class="print__datum">{datum}</span>
+      <svg class="print__marke" viewBox="30 0 60 150" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="60" cy="22" r="16" /><rect x="34" y="44" width="52" height="64" rx="4" /><circle cx="60" cy="77" r="8" /><line x1="60" y1="118" x2="40" y2="144" /><line x1="60" y1="118" x2="80" y2="144" /><line x1="60" y1="108" x2="60" y2="118" />
+      </svg>
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .print {
+    margin: 0;
+    background: var(--papier);
+    padding: 10px 10px 0;
+    border-radius: 2px;
+    transform: rotate(var(--drehung));
+    box-shadow: 0 1px 1px rgba(28, 23, 20, 0.12), 0 10px 24px -8px rgba(28, 23, 20, 0.35);
+  }
+  :global(.abschnitt--papier) .print { box-shadow: 0 0 0 1px var(--linie), 0 12px 26px -10px rgba(28, 23, 20, 0.3); }
+  .print__foto { aspect-ratio: 4 / 5; overflow: hidden; background: var(--honig-hell); }
+  .print__foto img { width: 100%; height: 100%; object-fit: cover; }
+  .print__platzhalter {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    padding: 12px;
+    background:
+      repeating-linear-gradient(135deg, rgba(107, 68, 41, 0.08) 0 10px, transparent 10px 20px),
+      var(--honig-hell);
+    color: var(--walnuss);
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+  .print__layout {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    column-gap: 10px;
+    padding: 12px 4px 14px;
+    color: var(--kohle);
+  }
+  .print__zeile { font-family: var(--font-titel); font-variation-settings: 'SOFT' 100; font-size: 1.05rem; line-height: 1.2; }
+  .print__datum { grid-row: 2; font-size: 0.75rem; color: var(--text-leise); }
+  .print__marke { grid-row: 1 / 3; grid-column: 2; width: 12px; height: 30px; color: var(--walnuss); }
+</style>

@@ -1,0 +1,53 @@
+---
+import daten from '../data/pakete.json';
+import site from '../data/site.json';
+interface Props { anlass?: string; }
+const { anlass = '' } = Astro.props;
+const aufpreis = daten.pakete[1].preis - daten.pakete[0].preis;
+---
+<div class="pakete">
+  {daten.pakete.map((p) => (
+    <article class:list={['paket', { 'paket--empfohlen': p.empfohlen }]}>
+      {p.empfohlen && <span class="paket__badge">Beliebteste Wahl</span>}
+      <h3>{p.name}</h3>
+      <p class="paket__preis"><span>{p.preis}</span> €</p>
+      <p class="paket__text">{p.beschreibung}</p>
+      <ul>
+        {p.leistungen.map((l) => <li>{l}</li>)}
+      </ul>
+      <a href={`/anfrage/?paket=${p.id}${anlass ? `&anlass=${anlass}` : ''}`} class:list={['button', { 'button--linie': !p.empfohlen }]}>{p.name} anfragen</a>
+    </article>
+  ))}
+</div>
+<p class="pakete__hinweis">Für {aufpreis} € mehr halten deine Gäste ihre Fotos sofort in der Hand. Die Anfahrt ist bis {site.anfahrtInklusiveKm} km inklusive. Als Kleinunternehmer berechne ich keine Mehrwertsteuer.</p>
+
+<div class="extras">
+  <h3>Extras</h3>
+  <ul>
+    {daten.extras.map((e) => (
+      <li><strong>{e.name}</strong> <span class="extras__preis">{e.preis}</span><br /><span class="extras__text">{e.text}</span></li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .pakete { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; max-width: 820px; margin-inline: auto; align-items: stretch; }
+  .paket { position: relative; display: flex; flex-direction: column; background: var(--papier); border: 2px solid transparent; border-radius: var(--radius); padding: 36px 32px 32px; }
+  .paket--empfohlen { border: 2px solid var(--walnuss); }
+  .paket__badge { position: absolute; top: -14px; left: 32px; background: var(--walnuss); color: var(--papier); font-size: 0.78rem; font-weight: 500; padding: 5px 14px; border-radius: 999px; }
+  .paket h3 { font-size: 1.6rem; margin-bottom: 4px; }
+  .paket__preis { font-family: var(--font-titel); font-size: 1.4rem; color: var(--walnuss); margin-bottom: 8px; }
+  .paket__preis span { font-size: 3rem; line-height: 1; }
+  .paket__text { color: var(--kohle-weich); }
+  .paket ul { list-style: none; padding: 0; margin: 8px 0 28px; display: grid; gap: 10px; flex: 1; }
+  .paket li { padding-left: 28px; position: relative; }
+  .paket li::before { content: ''; position: absolute; left: 2px; top: 8px; width: 14px; height: 8px; border-left: 2px solid var(--honig); border-bottom: 2px solid var(--honig); transform: rotate(-45deg); }
+  .pakete__hinweis { text-align: center; color: var(--kohle-weich); font-size: 0.92rem; margin: 24px auto 0; max-width: 620px; }
+  .extras { max-width: 820px; margin: 72px auto 0; }
+  .extras h3 { font-size: 1.2rem; }
+  .extras ul { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+  .extras strong { font-weight: 500; }
+  .extras__preis { color: var(--walnuss); font-size: 0.92rem; }
+  .extras__text { color: var(--kohle-weich); font-size: 0.92rem; }
+  @media (max-width: 680px) { .pakete { grid-template-columns: 1fr; gap: 32px; } }
+</style>

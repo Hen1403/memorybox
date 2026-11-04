@@ -1,0 +1,48 @@
+{
+  "pakete": [
+    {
+      "id": "digital",
+      "name": "Digital",
+      "preis": 279,
+      "beschreibung": "Alle Fotos in der Online-Galerie, ohne Drucker.",
+      "empfohlen": false,
+      "leistungen": [
+        "Memorybox inkl. Profikamera",
+        "Lieferung, Aufbau und Abholung am nächsten Tag",
+        "Requisiten und Hintergrund",
+        "Fotolayouts zur Auswahl",
+        "Online-Galerie für alle Gäste"
+      ]
+    },
+    {
+      "id": "print",
+      "name": "Print",
+      "preis": 339,
+      "beschreibung": "Deine Gäste halten ihre Fotos sofort in der Hand.",
+      "empfohlen": true,
+      "leistungen": [
+        "Alles aus „Digital“",
+        "Fotodrucker, Ausdruck in unter 10 Sekunden",
+        "400 Prints inklusive",
+        "Online-Galerie für alle Gäste"
+      ]
+    }
+  ],
+  "extras": [
+    {
+      "name": "Individuelles Drucklayout",
+      "preis": "ab 19 €",
+      "text": "Mit euren Namen, dem Datum oder eurem Firmenlogo auf jedem Foto."
+    },
+    {
+      "name": "Weitere Prints",
+      "preis": "[Preis]",
+      "text": "Falls 400 Prints nicht reichen."
+    },
+    {
+      "name": "Anfahrt über 20 km",
+      "preis": "[Preis/km]",
+      "text": "Bis 20 km rund um Bad Hersfeld ist die Anfahrt inklusive."
+    }
+  ]
+}

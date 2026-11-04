@@ -1,0 +1,82 @@
+{
+  "anlaesse": [
+    {
+      "slug": "hochzeit",
+      "name": "Hochzeit",
+      "kachelText": "Echte Momente eurer Gäste und ein Andenken für jeden.",
+      "linkText": "Fotobox für Hochzeiten",
+      "seoTitel": "Fotobox für eure Hochzeit in Bad Hersfeld & Osthessen",
+      "seoBeschreibung": "Handgebaute Vintage-Fotobox aus Holz für eure Hochzeit – mit Sofortdruck, individuellem Layout und persönlichem Auf- und Abbau in Hersfeld-Rotenburg.",
+      "titel": "Die Fotobox, die zu eurer Hochzeit passt.",
+      "intro": "Holz, Vintage, warmes Licht: Die Memorybox fügt sich in jede Hochzeitsdeko ein. Eure Gäste nehmen ihre Fotos sofort mit nach Hause, ihr bekommt alle Bilder in der Online-Galerie.",
+      "punkte": [
+        {
+          "titel": "Euer eigenes Drucklayout",
+          "text": "Mit euren Namen und dem Datum auf jedem Foto, passend zu Einladung und Deko."
+        },
+        {
+          "titel": "Ein Gästebuch, das lebt",
+          "text": "Eure Gäste sammeln die schönsten Erinnerungen an euren Tag."
+        },
+        {
+          "titel": "Kein Stress am großen Tag",
+          "text": "Ich liefere, baue auf und hole die Box am nächsten Tag ab. Ihr müsst euch um nichts kümmern."
+        }
+      ],
+      "bild": "",
+      "bildText": "Brautpaar mit Requisiten vor der Box"
+    },
+    {
+      "slug": "geburtstag",
+      "name": "Geburtstag",
+      "kachelText": "Vom 18. bis zum 80.: der Treffpunkt der Party.",
+      "linkText": "Fotobox für Geburtstage",
+      "seoTitel": "Fotobox für deinen Geburtstag in Bad Hersfeld & Osthessen",
+      "seoBeschreibung": "Fotobox mit Sofortdruck und Requisiten für deinen Geburtstag – persönlich geliefert und aufgebaut in Hersfeld-Rotenburg. Ab 279 €.",
+      "titel": "Die Party, über die alle noch reden.",
+      "intro": "Requisiten auf, Knopf drücken, Foto in der Hand: Die Memorybox bringt Gäste zusammen, die sich sonst nur zuwinken würden.",
+      "punkte": [
+        {
+          "titel": "Requisiten inklusive",
+          "text": "Brillen, Hüte und Schilder für Fotos, über die ihr noch lange lacht."
+        },
+        {
+          "titel": "Sofortdruck",
+          "text": "Jedes Foto ist in unter 10 Sekunden gedruckt. Deine Gäste nehmen es direkt mit."
+        },
+        {
+          "titel": "Du feierst, ich mache den Rest",
+          "text": "Aufbau vor der Feier, Abholung am nächsten Tag."
+        }
+      ],
+      "bild": "",
+      "bildText": "Gäste mit Requisiten vor dem Gold-Lametta"
+    },
+    {
+      "slug": "firmenfeier",
+      "name": "Firmenfeier",
+      "kachelText": "Weihnachtsfeier, Sommerfest oder Jubiläum, mit eurem Logo auf jedem Foto.",
+      "linkText": "Fotobox für Firmenfeiern",
+      "seoTitel": "Fotobox für Firmenfeiern & Events in Osthessen",
+      "seoBeschreibung": "Fotobox für Weihnachtsfeier, Sommerfest oder Messe – mit Firmenlogo auf jedem Ausdruck und Rechnung. Hersfeld-Rotenburg & Osthessen.",
+      "titel": "Ein Team-Foto, das jeder mitnimmt.",
+      "intro": "Für Weihnachtsfeier, Sommerfest, Jubiläum oder Vereinsfeier: Die Memorybox bringt Kolleginnen und Kollegen vor die Kamera, mit eurem Logo auf jedem Ausdruck.",
+      "punkte": [
+        {
+          "titel": "Euer Logo auf jedem Foto",
+          "text": "Ein Drucklayout in euren Farben macht jedes Foto zum Andenken an euer Unternehmen."
+        },
+        {
+          "titel": "Unkompliziert abgerechnet",
+          "text": "Klares Angebot vorab, ordentliche Rechnung danach."
+        },
+        {
+          "titel": "Verlässlich vor Ort",
+          "text": "Pünktlicher Aufbau, ein fester Ansprechpartner, Abholung am nächsten Tag."
+        }
+      ],
+      "bild": "",
+      "bildText": "Team-Foto auf einer Weihnachtsfeier"
+    }
+  ]
+}

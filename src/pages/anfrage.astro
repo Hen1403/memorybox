@@ -1,0 +1,261 @@
+---
+import Base from '../layouts/Base.astro';
+import Kalender from '../components/Kalender.astro';
+import site from '../data/site.json';
+import pakete from '../data/pakete.json';
+import anlaesse from '../data/anlaesse.json';
+---
+<Base titel="Termin anfragen | memorybox – Die Fotobox aus Holz" beschreibung="Prüfe, ob dein Wunschtermin frei ist, und frag die Memorybox unverbindlich an. Antwort innerhalb von 24 Stunden.">
+  <section class="abschnitt anfrage">
+    <div class="container">
+      <div class="kopf">
+        <h1>Termin anfragen</h1>
+        <p>Drei kurze Schritte, unverbindlich. Ich melde mich innerhalb von 24 Stunden mit einem Angebot.</p>
+      </div>
+
+      <ol class="fortschritt" aria-label="Fortschritt">
+        <li class="aktiv" aria-current="step">Wann?</li>
+        <li>Was?</li>
+        <li>Wer?</li>
+      </ol>
+
+      <form id="anfrage" action="/anfrage.php" method="post" novalidate>
+        <fieldset class="schritt" data-schritt="1" tabindex="-1" aria-describedby="fehler-1">
+          <legend>Wann ist deine Feier?</legend>
+          <div class="schritt1">
+            <Kalender />
+            <div>
+              <p class="gewaehlt" aria-live="polite">Wähle einen freien Tag im Kalender.</p>
+              <noscript><label>Wunschtermin<input type="date" name="datum_ohne_js" /></label></noscript>
+              <input type="hidden" name="datum" id="datum" />
+              <label>Ort der Feier <span class="optional">optional</span>
+                <input type="text" name="ort" placeholder="z. B. Bad Hersfeld, Stadthalle" autocomplete="address-level2" />
+              </label>
+              <label>Ungefähre Gästezahl <span class="optional">optional</span>
+                <input type="number" name="gaeste" min="1" inputmode="numeric" placeholder="z. B. 80" />
+              </label>
+            </div>
+          </div>
+          <p class="fehler" id="fehler-1" data-fehler="1" role="alert" hidden>Bitte wähle zuerst einen freien Tag im Kalender.</p>
+          <div class="aktionen"><button type="button" class="button" data-weiter>Weiter</button></div>
+        </fieldset>
+
+        <fieldset class="schritt" data-schritt="2" tabindex="-1" aria-describedby="fehler-2">
+          <legend>Was feierst du?</legend>
+          <p class="gruppe-titel">Anlass</p>
+          <div class="auswahl">
+            {anlaesse.anlaesse.map((a) => (
+              <label class="karte"><input type="radio" name="anlass" value={a.slug} /><span>{a.name}</span></label>
+            ))}
+            <label class="karte"><input type="radio" name="anlass" value="andere" /><span>Andere Feier</span></label>
+          </div>
+          <p class="gruppe-titel">Paket</p>
+          <div class="auswahl">
+            {pakete.pakete.map((p) => (
+              <label class="karte"><input type="radio" name="paket" value={p.id} /><span>{p.name} <small>{p.preis} €</small></span></label>
+            ))}
+            <label class="karte"><input type="radio" name="paket" value="unsicher" /><span>Noch unsicher</span></label>
+          </div>
+          <p class="gruppe-titel">Extras <span class="optional">optional</span></p>
+          <div class="auswahl">
+            {pakete.extras.slice(0, 1).map((e) => (
+              <label class="karte"><input type="checkbox" name="extras[]" value={e.name} /><span>{e.name} <small>{e.preis}</small></span></label>
+            ))}
+          </div>
+          <p class="fehler" id="fehler-2" data-fehler="2" role="alert" hidden>Bitte wähle einen Anlass und ein Paket.</p>
+          <div class="aktionen">
+            <button type="button" class="button button--linie" data-zurueck>Zurück</button>
+            <button type="button" class="button" data-weiter>Weiter</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="schritt" data-schritt="3" tabindex="-1" aria-describedby="fehler-3">
+          <legend>Wie erreiche ich dich?</legend>
+          <div class="felder">
+            <label>Vorname<input type="text" name="vorname" required autocomplete="given-name" /></label>
+            <label>Nachname<input type="text" name="nachname" required autocomplete="family-name" /></label>
+            <label>E-Mail<input type="email" name="email" required autocomplete="email" placeholder="name@beispiel.de" /></label>
+            <label>Telefon <span class="optional">optional</span><input type="tel" name="telefon" autocomplete="tel" /></label>
+          </div>
+          <label>Nachricht <span class="optional">optional</span>
+            <textarea name="nachricht" rows="4" placeholder="Was sollte ich noch wissen?"></textarea>
+          </label>
+          <label class="falle" aria-hidden="true">Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          <label class="check">
+            <input type="checkbox" name="datenschutz" value="ja" required />
+            <span>Ich bin einverstanden, dass meine Angaben zur Bearbeitung der Anfrage gespeichert werden. Mehr in der <a href="/datenschutz/" target="_blank">Datenschutzerklärung</a>.</span>
+          </label>
+          <p class="fehler" id="fehler-3" data-fehler="3" role="alert" hidden>Bitte fülle Vorname, Nachname und eine gültige E-Mail aus und bestätige den Datenschutzhinweis.</p>
+          <div class="aktionen">
+            <button type="button" class="button button--linie" data-zurueck>Zurück</button>
+            <button type="submit" class="button">Unverbindlich anfragen</button>
+          </div>
+        </fieldset>
+      </form>
+
+      <p class="alternativ">Lieber direkt? Schreib mir auf <a href={`https://wa.me/${site.whatsapp}`} rel="noopener" target="_blank">WhatsApp</a> oder per <a href={`https://www.instagram.com/${site.instagram}/`} rel="noopener" target="_blank">Instagram-Nachricht</a>, oder ruf an unter <a href={`tel:${site.telefon.replace(/\s/g, '')}`}>{site.telefonAnzeige}</a>.</p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#anfrage')!;
+  const schritte = [...form.querySelectorAll<HTMLFieldSetElement>('.schritt')];
+  const fortschritt = [...document.querySelectorAll('.fortschritt li')];
+  const datumFeld = form.querySelector<HTMLInputElement>('#datum')!;
+  const gewaehltText = form.querySelector('.gewaehlt')!;
+  const kalender = form.querySelector('.kalender')!;
+  let aktuell = 0;
+
+  form.classList.add('js');
+
+  function zeigen(i: number, scrollen = true) {
+    aktuell = i;
+    schritte.forEach((s, n) => (s.hidden = n !== i));
+    fortschritt.forEach((li, n) => {
+      li.classList.toggle('aktiv', n === i);
+      li.classList.toggle('erledigt', n < i);
+      if (n === i) li.setAttribute('aria-current', 'step');
+      else li.removeAttribute('aria-current');
+    });
+    form.querySelector<HTMLElement>(`[data-fehler="${i + 1}"]`)!.hidden = true;
+    if (scrollen) {
+      document.querySelector('.fortschritt')!.scrollIntoView({ block: 'start' });
+      schritte[i].focus({ preventScroll: true });
+    }
+  }
+
+  // Nach einem Fehler zum ersten offenen Feld springen
+  function ersterFehler(i: number) {
+    if (i === 0) return kalender.querySelector<HTMLElement>('.tag--frei');
+    if (i === 1) {
+      const offen = ['anlass', 'paket'].find((n) => !form.querySelector(`[name="${n}"]:checked`));
+      return form.querySelector<HTMLElement>(`[name="${offen}"]`);
+    }
+    return [...schritte[2].querySelectorAll<HTMLInputElement>('input[required]')].find((f) => !f.checkValidity()) || null;
+  }
+
+  function gueltig(i: number) {
+    if (i === 0) return !!datumFeld.value;
+    if (i === 1) return !!form.querySelector('[name="anlass"]:checked') && !!form.querySelector('[name="paket"]:checked');
+    const pflicht = schritte[2].querySelectorAll<HTMLInputElement>('input[required]');
+    return [...pflicht].every((f) => f.checkValidity());
+  }
+
+  function pruefen(i: number) {
+    const ok = gueltig(i);
+    form.querySelector<HTMLElement>(`[data-fehler="${i + 1}"]`)!.hidden = ok;
+    if (i === 2) {
+      schritte[2].querySelectorAll<HTMLInputElement>('input[required]').forEach((f) => {
+        f.setAttribute('aria-invalid', String(!ok && !f.checkValidity()));
+      });
+    }
+    if (!ok) ersterFehler(i)?.focus();
+    return ok;
+  }
+
+  form.addEventListener('click', (e) => {
+    const ziel = e.target as HTMLElement;
+    if (ziel.closest('[data-weiter]') && pruefen(aktuell)) zeigen(aktuell + 1);
+    if (ziel.closest('[data-zurueck]')) zeigen(aktuell - 1);
+  });
+
+  form.addEventListener('input', (e) => {
+    form.querySelector<HTMLElement>(`[data-fehler="${aktuell + 1}"]`)!.hidden = true;
+    (e.target as HTMLElement).removeAttribute('aria-invalid');
+  });
+
+  kalender.addEventListener('datum', (e) => {
+    const { datum, belegt } = (e as CustomEvent).detail;
+    const lesbar = new Date(`${datum}T12:00:00`).toLocaleDateString('de-DE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    if (belegt) {
+      datumFeld.value = '';
+      gewaehltText.innerHTML = `Der <strong>${lesbar}</strong> ist leider schon belegt. Wähle gern einen anderen Tag.`;
+    } else {
+      datumFeld.value = datum;
+      gewaehltText.innerHTML = `Dein Wunschtermin: <strong>${lesbar}</strong> , noch frei.`;
+      form.querySelector<HTMLElement>('[data-fehler="1"]')!.hidden = true;
+    }
+  });
+
+  form.addEventListener('submit', (e) => {
+    if (!pruefen(2)) { e.preventDefault(); return; }
+    const knopf = form.querySelector<HTMLButtonElement>('[type="submit"]')!;
+    knopf.disabled = true;
+    knopf.textContent = 'Wird gesendet …';
+    // Lokal läuft kein PHP – dort nur zur Danke-Seite springen
+    if (['localhost', '127.0.0.1'].includes(location.hostname)) {
+      e.preventDefault();
+      location.href = '/danke/?vorschau=1';
+    }
+  });
+
+  // Vorauswahl aus der Adresse, z. B. /anfrage/?datum=2027-06-12&anlass=hochzeit&paket=print
+  const params = new URLSearchParams(location.search);
+  for (const name of ['anlass', 'paket']) {
+    const wert = params.get(name);
+    const feld = wert && form.querySelector<HTMLInputElement>(`[name="${name}"][value="${CSS.escape(wert)}"]`);
+    if (feld) feld.checked = true;
+  }
+  if (params.get('datum')) kalender.dispatchEvent(new CustomEvent('vorauswahl', { detail: params.get('datum') }));
+
+  zeigen(0, false);
+
+  // Zurück-Taste nach dem Absenden: Knopf wieder freigeben
+  window.addEventListener("pageshow", () => {
+    const knopf = form.querySelector<HTMLButtonElement>("[type=\"submit\"]")!;
+    knopf.disabled = false;
+    knopf.textContent = "Unverbindlich anfragen";
+  });
+</script>
+
+<style>
+  .anfrage { padding-top: clamp(32px, 6vw, 72px); }
+  .anfrage h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
+  .fortschritt { list-style: none; padding: 0; margin: 0 0 32px; display: flex; gap: 8px; counter-reset: n; }
+  .fortschritt li { counter-increment: n; flex: 1; padding-top: 10px; border-top: 3px solid var(--linie); color: var(--text-leise); font-size: 0.92rem; }
+  .fortschritt li::before { content: counter(n) '. '; }
+  .fortschritt li.aktiv { border-color: var(--walnuss); color: var(--kohle); font-weight: 500; }
+  .fortschritt li.erledigt { border-color: var(--honig); color: var(--walnuss); }
+
+  form { max-width: 860px; }
+  fieldset { border: 0; padding: 0; margin: 0 0 40px; }
+  legend { font-family: var(--font-titel); font-size: 1.6rem; margin-bottom: 20px; padding: 0; }
+  fieldset:focus { outline: none; }
+  [aria-invalid="true"] { border-color: #A3402D !important; box-shadow: 0 0 0 1px #A3402D; }
+  .schritt1 { display: grid; grid-template-columns: auto 1fr; gap: 32px; align-items: start; }
+  .gewaehlt { background: var(--papier); border-radius: var(--radius); padding: 14px 16px; }
+
+  label { display: block; font-size: 0.92rem; font-weight: 500; margin-bottom: 16px; }
+  .optional { font-weight: 400; color: var(--text-leise); font-size: 0.82rem; }
+  input[type='text'], input[type='email'], input[type='tel'], input[type='number'], input[type='date'], textarea {
+    display: block; width: 100%; margin-top: 6px; font: inherit; font-weight: 400; font-size: 1rem;
+    padding: 12px 14px; border: 1px solid var(--rahmen-feld); border-radius: var(--radius); background: var(--papier); color: var(--kohle);
+  }
+  textarea { resize: vertical; }
+  .felder { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+
+  .gruppe-titel { font-weight: 500; font-size: 0.92rem; margin: 8px 0 10px; }
+  .auswahl { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+  .karte { margin: 0; position: relative; }
+  .karte input { position: absolute; opacity: 0; }
+  .karte span { display: inline-block; padding: 12px 18px; border: 1.5px solid var(--rahmen-feld); border-radius: 999px; background: var(--papier); cursor: pointer; font-weight: 400; }
+  .karte small { color: var(--walnuss); margin-left: 4px; }
+  .karte span { transition: transform 120ms var(--ease-out), background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
+  .karte span:active { transform: scale(0.97); }
+  .karte input:checked + span { border-color: var(--walnuss); background: var(--walnuss); color: var(--papier); }
+  .karte input:checked + span small { color: var(--honig-hell); }
+  .karte input:focus-visible + span { outline: 2px solid var(--walnuss); outline-offset: 2px; }
+
+  .check { display: flex; gap: 10px; font-weight: 400; align-items: flex-start; }
+  .check input { margin-top: 5px; accent-color: var(--walnuss); width: 18px; height: 18px; flex: none; }
+  .falle { position: absolute; left: -9999px; }
+  .fehler { color: #A3402D; font-size: 0.92rem; }
+  .aktionen { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  button[type="submit"]:disabled { opacity: 0.7; cursor: progress; }
+  .alternativ { color: var(--kohle-weich); font-size: 0.95rem; }
+
+  @media (max-width: 760px) {
+    .schritt1, .felder { grid-template-columns: 1fr; }
+  }
+</style>

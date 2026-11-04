@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+import Print from '../components/Print.astro';
+import Pakete from '../components/Pakete.astro';
+import Faq from '../components/Faq.astro';
+import Abschluss from '../components/Abschluss.astro';
+import site from '../data/site.json';
+import daten from '../data/anlaesse.json';
+import faq from '../data/faq.json';
+
+export function getStaticPaths() {
+  return daten.anlaesse.map((a) => ({ params: { anlass: a.slug }, props: { a } }));
+}
+
+const { a } = Astro.props;
+---
+<Base titel={`${a.seoTitel} | memorybox`} beschreibung={a.seoBeschreibung}>
+  <section class="hero holz">
+    <div class="container hero__raster">
+      <div>
+        <h1>{a.titel}</h1>
+        <p class="hero__intro">{a.intro}</p>
+        <div class="hero__buttons">
+          <a href={`/anfrage/?anlass=${a.slug}`} class="button button--hell">Termin anfragen</a>
+          <a href="#pakete" class="button button--hell-linie">Pakete ansehen</a>
+        </div>
+        <p class="hero__notiz">Aus Bad Hersfeld, unterwegs in ganz {site.region}. Antwort innerhalb von 24 Stunden.</p>
+      </div>
+      <Print src={a.bild} alt={a.bildText} zeile={a.name} drehung={3} class="hero__print" sofort />
+    </div>
+  </section>
+
+  <section class="abschnitt abschnitt--papier">
+    <div class="container punkte">
+      {a.punkte.map((p) => (
+        <div>
+          <h3>{p.titel}</h3>
+          <p>{p.text}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="abschnitt" id="pakete">
+    <div class="container">
+      <div class="kopf kopf--mitte">
+        <h2>Zwei Pakete. Alles drin.</h2>
+      </div>
+      <Pakete anlass={a.slug} />
+    </div>
+  </section>
+
+  <section class="abschnitt abschnitt--papier">
+    <div class="container">
+      <div class="kopf kopf--mitte">
+        <h2>Häufige Fragen</h2>
+      </div>
+      <Faq fragen={faq.fragen} />
+    </div>
+  </section>
+
+  <Abschluss anlass={a.slug} />
+</Base>
+
+<style>
+  .hero { padding-block: clamp(48px, 8vw, 112px); overflow: hidden; }
+  .hero__raster { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(40px, 6vw, 88px); align-items: center; }
+  .hero h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); max-width: 13ch; }
+  .hero__intro { font-size: 1.15rem; color: var(--honig-hell); max-width: 30em; }
+  .hero__buttons { display: flex; gap: 12px; flex-wrap: wrap; margin: 32px 0 18px; }
+  .hero__notiz { font-size: 0.92rem; color: var(--kiefer); }
+  .hero :global(.hero__print) { max-width: 340px; justify-self: center; width: 100%; }
+  .punkte { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; }
+  .punkte p { color: var(--kohle-weich); }
+  @media (max-width: 760px) {
+    .hero__raster, .punkte { grid-template-columns: 1fr; }
+  }
+</style>

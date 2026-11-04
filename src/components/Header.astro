@@ -1,0 +1,48 @@
+---
+import Logo from './Logo.astro';
+---
+<header class="header">
+  <div class="container header__innen">
+    <a href="/" class="header__logo" aria-label="memorybox – zur Startseite"><Logo /></a>
+    <nav class="header__nav" aria-label="Hauptmenü">
+      <a href="/#pakete">Pakete</a>
+      <a href="/#galerie">Galerie</a>
+      <a href="/#ueber-mich">Über mich</a>
+      <a href="/#fragen">Fragen</a>
+    </nav>
+    <a href="/anfrage/" class="button header__cta">Termin anfragen</a>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(230, 225, 217, 0.94);
+    backdrop-filter: blur(8px);
+  }
+  .header__innen { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 76px; }
+  .header__logo { text-decoration: none; }
+  .header__nav { display: flex; gap: 28px; }
+  .header__nav a { color: var(--kohle); text-decoration: none; font-size: 0.95rem; }
+  @media (hover: hover) and (pointer: fine) { .header__nav a:hover { color: var(--walnuss); } }
+  .header__cta { padding: 11px 20px; font-size: 0.92rem; }
+  @media (max-width: 900px) {
+    .header__innen { flex-wrap: wrap; row-gap: 0; }
+    .header__nav {
+      order: 3;
+      width: 100%;
+      gap: 4px;
+      margin-inline: -12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .header__nav::-webkit-scrollbar { display: none; }
+    .header__nav a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; white-space: nowrap; }
+  }
+  @media (max-width: 760px) {
+    .header__innen { min-height: 64px; padding-top: 8px; }
+    .header__cta { display: none; }
+  }
+</style>

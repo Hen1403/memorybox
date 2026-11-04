@@ -1,0 +1,29 @@
+---
+// Box-Symbol: Reflektor, Holzbox mit Linse, Stativ
+interface Props { farbe?: string; groesse?: number; mitText?: boolean; }
+const { farbe = 'var(--walnuss)', groesse = 36, mitText = true } = Astro.props;
+---
+<span class="logo">
+  <svg width={groesse * 0.4} height={groesse} viewBox="30 0 60 150" fill="none" stroke={farbe} stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="60" cy="22" r="16" />
+    <line x1="60" y1="38" x2="60" y2="44" />
+    <rect x="34" y="44" width="52" height="64" rx="4" />
+    <circle cx="60" cy="77" r="8" />
+    <line x1="60" y1="108" x2="60" y2="118" />
+    <line x1="60" y1="118" x2="40" y2="144" />
+    <line x1="60" y1="118" x2="80" y2="144" />
+  </svg>
+  {mitText && (
+    <span class="logo__text">
+      <span class="logo__name">memorybox</span>
+      <span class="logo__zusatz">Die Fotobox aus Holz</span>
+    </span>
+  )}
+</span>
+
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 10px; }
+  .logo__text { display: flex; flex-direction: column; line-height: 1; }
+  .logo__name { font-family: var(--font-titel); font-variation-settings: 'SOFT' 100; font-weight: 600; font-size: 1.6rem; letter-spacing: -0.02em; color: var(--kohle); }
+  .logo__zusatz { font-size: 0.78rem; color: var(--walnuss); margin-top: 4px; }
+</style>
